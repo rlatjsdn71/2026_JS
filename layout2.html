@@ -50,6 +50,29 @@
         <button id="login-btn" class="btn btn-danger">로그인</button>
     </div>
 
+    <div class="alert alert-danger" id="count-sale">
+        5초 이내 구매 시 사은품 증정~
+    </div>
+    <div style="overflow: hidden;">
+        <div class="slide-container">
+            <div class="slide-box">
+                <img src="./img/car1-1.png" alt="" class="slide-img">
+            </div>
+            <div class="slide-box">
+                <img src="./img/car2-1.png" alt="" class="slide-img">
+            </div>
+            <div class="slide-box">
+                <img src="./img/car3-1.png" alt="" class="slide-img">
+            </div>
+        </div>
+    </div>
+
+    <button type="button" class="btn btn-primary btn-sm rounded-pill slide-1">1</button>
+    <button type="button" class="btn btn-primary btn-sm rounded-pill slide-2">2</button>
+    <button type="button" class="btn btn-primary btn-sm rounded-pill slide-3">3</button>
+
+    <button type="button" class="btn btn-primary btn-sm rounded-pill slide-prev">prev</button>
+    <button type="button" class="btn btn-primary btn-sm rounded-pill slide-post">post</button>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
@@ -59,10 +82,12 @@
         integrity="sha256-OaVG6prZf4v69dPg6PhVattBXkcOWQB62pdZ3ORyrao=" crossorigin="anonymous"></script>
 
     <script>
+        //리스트 버튼
         $('#list-btn').on('click', function () {
             $('.list-group').toggleClass('show');
         });
-
+        
+        //로그인 시퀀스
         $('#login-btn').on('click', function () {
             $('.black-bg').addClass('show-modal')
         });
@@ -73,13 +98,23 @@
 
         $('#login-form').on('submit', function (e) {
             //*button type이 submit이기 때문에, login-form에서 submit이 발생 시 = submit 버튼을 눌를 시
-            if ($('#id-input').val() == '' || $('#pw-input').val() == '') {
+            let id = $('#id-input').val();
+            let pw = $('#pw-input').val();
+            if (id == '' || pw == '') {
                 //document.getElementById('id-input').value
                 alert('아이디/비밀번호를 입력하세용');
                 e.preventDefault(); //폼 전송 막기
             }
-            else if ($('#pw-input').val().length < 6) {
+            else if (!/^[a-zA-z0-9]+@[a-zA-Z]+\.[a-zA-Z\.]+$/.test(id)) {
+                alert('이메일 서식을 확인하세용');
+                e.preventDefault(); //폼 전송 막기
+            }
+            else if (pw.length < 6) {
                 alert('비밀번호가 너무 짧아용');
+                e.preventDefault(); //폼 전송 막기
+            }
+            else if (!/[A-Z]/.test(pw)) {
+                alert('비밀번호에 영어대문자가 없어용');
                 e.preventDefault(); //폼 전송 막기
             }
             /*
@@ -88,13 +123,14 @@
                 //document.getElementById('login-form').action //form 내부 action 내용 변경
             }*/
         });
-        
-        function dark_mode(){
+
+        //다크모드 라이트모드
+        function dark_mode() {
             $('body').addClass('dark-mode')
             $('body').removeClass('light-mode')
 
-            $('.main-bg').css("background-color","#242424")
-            
+            $('.main-bg').css("background-color", "#242424")
+
             $('.navbar').addClass('bg-dark')
             $('.navbar').addClass('navbar-dark')
             $('.navbar').removeClass('bg-light')
@@ -102,14 +138,14 @@
 
             $('.dark-badge').addClass('bg-light');
             $('.dark-badge').removeClass('bg-dark');
-            $('.dark-badge').css("color","black");
+            $('.dark-badge').css("color", "black");
         }
 
-        function light_mode(element){
+        function light_mode(element) {
             $('body').addClass('light-mode')
             $('body').removeClass('dark-mode')
-            
-            $('.main-bg').css("background-color","lightgray")
+
+            $('.main-bg').css("background-color", "lightgray")
 
             $('.navbar').addClass('bg-light')
             $('.navbar').addClass('navbar-light')
@@ -118,22 +154,70 @@
 
             $('.dark-badge').addClass('bg-dark');
             $('.dark-badge').removeClass('bg-ligt');
-            $('.dark-badge').css("color","white");
+            $('.dark-badge').css("color", "white");
         }
 
         let dark = 0; //변수 문법
 
         $('#dark-badge').on('click', function () {
-            if (dark % 2 == 0){
+            if (dark % 2 == 0) {
                 $('#dark-badge').text('Light 🔄');
                 dark_mode();
             }
-            else{
+            else {
                 $('#dark-badge').text('Dark 🔄');
                 light_mode();
             }
             dark++;
         });
+        
+        //타이머
+        let timer_cnt = 4;
+
+        setTimeout(function () { $('#count-sale').hide(); }, 5000); //타이머
+        setInterval(function () {
+            let phrase = timer_cnt + '초 이내 구매 시 사은품 증정~'
+            $('#count-sale').text(phrase);
+            if (timer_cnt > 0) timer_cnt--;
+        }, 1000); //타이머 반복
+
+        //캐러셀 슬라이드
+        let slide = 0
+        const max_silde = $('.slide-img').length - 1; //요소 개수 구하기
+        
+
+        function sliding(){
+            let temp = 'translateX(' + slide * -100 + 'vw)'
+            $('.slide-container').css('transform', temp);
+        }
+
+        $('.slide-1').on('click', function(){    
+            slide = 0;
+            sliding();
+        })
+
+        $('.slide-2').on('click', function(){
+            slide = 1;
+            sliding();
+        })
+
+        $('.slide-3').on('click', function(){
+            slide = 2;
+            sliding();
+        })
+
+        $('.slide-prev').on('click', function(){
+            if(slide>0){
+                slide--;
+                sliding();
+            }
+        })
+        $('.slide-post').on('click', function(){
+            if(slide<max_silde){
+                slide++;
+                sliding();
+            }
+        })
 
     </script>
 </body>

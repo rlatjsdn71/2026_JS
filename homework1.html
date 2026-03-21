@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <p>태조 이성계가 태어난 년도는?</p>
+    <input type="text" id="answer">
+    <button id="send-answer">제출</button>
+
+    <script>
+        document.getElementById('send-answer').addEventListener('click', function(){
+            var temp = document.getElementById('answer').value;
+            if(temp == '1335') alert('성공');
+            else alert('실패');
+        });      
+        let age = 24;
+        const loc = "Seoul";
+
+        var cash = 10000;
+        var future = 0;
+
+        if (cash >= 50000) future = cash * 1.2 * 1.2;
+        else future = cash * 1.15 * 1.15;
+
+        console.log(future);
+
+        var first = 360;
+        console.log(first + (first * 2 / 3) + (first * 4 / 9));
+
+        function toMS(min,sec){
+            return sec * 1000 + min * 60 * 1000;
+        }
+
+        console.log(toMS(1,30))
+        console.log(toMS(2,10));
+
+        function disc10p(p, b){
+            if(b) return parseFloat((p * 0.9 - 1.5).toFixed(1));
+            return parseFloat((p * 0.9).toFixed(1));
+        }
+
+        console.log(disc10p(70, false));
+        console.log(disc10p(10, true));
+    </script>
+</body>
+
+</html>
