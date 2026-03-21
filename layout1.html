@@ -15,7 +15,12 @@
     </div>
     <button onclick="box_display('alert-box', 'block','아이디 입력하세용')">button1</button>
     <button onclick="box_display('alert-box', 'block','비밀번호 입력하세용')">button2</button>
-    
+
+    <p class="hello">안녕</p>
+    <p class="hello">안녕</p>
+
+    <script src="https://code.jquery.com/jquery-4.0.0.min.js"
+        integrity="sha256-OaVG6prZf4v69dPg6PhVattBXkcOWQB62pdZ3ORyrao=" crossorigin="anonymous"></script>
 
     <script>
 
@@ -27,6 +32,10 @@
             document.getElementById(id).style.display = display;
             document.getElementById(id+'-p').innerHTML = content;
         }
+
+        $('.hello').css('color', 'red'); //jquery 문법
+        $('.hello').html('바보');
+
 
     </script>
 </body>

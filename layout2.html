@@ -11,10 +11,27 @@
     <title>Document</title>
 </head>
 
-<body>
+<body class="">
+    <div class="black-bg">
+        <div class="white-bg">
+            <h4>로그인하세요</h4>
+            <form action="success.html" id="login-form">
+                <div class="my-3">
+                    <input type="text" class="form-control" placeholder="아이디" id="id-input">
+                </div>
+                <div class="my-3">
+                    <input type="password" class="form-control" placeholder="비밀번호" id="pw-input">
+                </div>
+                <button type="submit" class="btn btn-primary">전송</button>
+                <button type="button" class="btn btn-danger" id="close-btn">닫기</button>
+            </form>
+        </div>
+    </div>
+
     <nav class="navbar navbar-light bg-light">
         <div class="container-fluid">
             <span class="navbar-brand">Navbar</span>
+            <span class="badge bg-dark dark-badge" id="dark-badge">Dark 🔄</span>
             <button class="navbar-toggler" type="button" id="list-btn">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -28,6 +45,11 @@
         <li class="list-group-item">And a fifth one</li>
     </ul>
 
+    <div class="main-bg">
+        <h4>Shirts on Sales</h4>
+        <button id="login-btn" class="btn btn-danger">로그인</button>
+    </div>
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
@@ -36,33 +58,83 @@
     <script src="https://code.jquery.com/jquery-4.0.0.min.js"
         integrity="sha256-OaVG6prZf4v69dPg6PhVattBXkcOWQB62pdZ3ORyrao=" crossorigin="anonymous"></script>
 
-    <p class="hello">안녕</p>
-    <p class="hello">안녕</p>
-
-    <div class="black-bg">
-        <div class="white-bg">
-            <h4>로그인하세요</h4>
-            <button class="btn btn-danger" id="close">닫기</button>
-        </div>
-    </div>
-
-    <button id="login-btn">로그인</button>
-
     <script>
-        $('.hello').css('color', 'red');
-        $('.hello').html('바보');
-
         $('#list-btn').on('click', function () {
             $('.list-group').toggleClass('show');
         });
 
-        $('#login-btn').on('click', function(){
-            $('.black-bg').show()
+        $('#login-btn').on('click', function () {
+            $('.black-bg').addClass('show-modal')
         });
 
-        $('#close').on('click', function(){
-            $('.black-bg').hide()
+        $('#close-btn').on('click', function () {
+            $('.black-bg').removeClass('show-modal')
         });
+
+        $('#login-form').on('submit', function (e) {
+            //*button type이 submit이기 때문에, login-form에서 submit이 발생 시 = submit 버튼을 눌를 시
+            if ($('#id-input').val() == '' || $('#pw-input').val() == '') {
+                //document.getElementById('id-input').value
+                alert('아이디/비밀번호를 입력하세용');
+                e.preventDefault(); //폼 전송 막기
+            }
+            else if ($('#pw-input').val().length < 6) {
+                alert('비밀번호가 너무 짧아용');
+                e.preventDefault(); //폼 전송 막기
+            }
+            /*
+            else{
+                $('#login-form').attr('action','success.html');
+                //document.getElementById('login-form').action //form 내부 action 내용 변경
+            }*/
+        });
+        
+        function dark_mode(){
+            $('body').addClass('dark-mode')
+            $('body').removeClass('light-mode')
+
+            $('.main-bg').css("background-color","#242424")
+            
+            $('.navbar').addClass('bg-dark')
+            $('.navbar').addClass('navbar-dark')
+            $('.navbar').removeClass('bg-light')
+            $('.navbar').removeClass('navbar-light')
+
+            $('.dark-badge').addClass('bg-light');
+            $('.dark-badge').removeClass('bg-dark');
+            $('.dark-badge').css("color","black");
+        }
+
+        function light_mode(element){
+            $('body').addClass('light-mode')
+            $('body').removeClass('dark-mode')
+            
+            $('.main-bg').css("background-color","lightgray")
+
+            $('.navbar').addClass('bg-light')
+            $('.navbar').addClass('navbar-light')
+            $('.navbar').removeClass('bg-dark')
+            $('.navbar').removeClass('navbar-dark')
+
+            $('.dark-badge').addClass('bg-dark');
+            $('.dark-badge').removeClass('bg-ligt');
+            $('.dark-badge').css("color","white");
+        }
+
+        let dark = 0; //변수 문법
+
+        $('#dark-badge').on('click', function () {
+            if (dark % 2 == 0){
+                $('#dark-badge').text('Light 🔄');
+                dark_mode();
+            }
+            else{
+                $('#dark-badge').text('Dark 🔄');
+                light_mode();
+            }
+            dark++;
+        });
+
     </script>
 </body>
 
