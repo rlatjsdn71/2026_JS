@@ -21,6 +21,7 @@ div {
     background: rgba(0, 0, 0, 0.5);
     z-index: 5;
     padding: 30px;
+    z-index: 6;
     visibility: hidden;
     opacity: 0;
     
@@ -31,10 +32,6 @@ div {
     background: white;
     border-radius: 5px;
     padding: 30px;
-}
-
-.dark-badge{
-    cursor: pointer;
 }
 
 .slide-container{
@@ -50,6 +47,59 @@ div {
 
 .slide-box img{
     width: 100%
+}
+
+.navbar{
+    position: fixed;
+    width: 100%;
+    z-index: 5;
+    height: 75px;
+    padding: 0px;
+}
+
+.navbar-brand{
+    font-size: 30px;
+    transition: font-size 0.5s;
+    margin-left: 20px;
+}
+
+.dark-badge{
+    cursor: pointer;
+    position: absolute;
+    right: 100px;
+}
+
+.navbar-toggler{
+    position: absolute;
+    margin: 0px;
+    right: 10px;
+}
+
+.count-sale{
+    position: absolute;
+    width: 100%;
+
+}
+
+.list-group{
+    position: fixed;
+    width: 100%;
+    margin-top: 75px;
+    z-index: 5;
+}
+
+.progress{
+    width: 100%;
+    height: 3px;
+    position: absolute;
+    bottom: 0px;
+    background-color: none;
+}
+
+.progress-bar{
+    width: 0%;
+    height: 100%;
+    background-color: black;
 }
 
 .dark-mode{

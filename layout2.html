@@ -27,16 +27,17 @@
             </form>
         </div>
     </div>
-
     <nav class="navbar navbar-light bg-light">
-        <div class="container-fluid">
-            <span class="navbar-brand">Navbar</span>
-            <span class="badge bg-dark dark-badge" id="dark-badge">Dark 🔄</span>
-            <button class="navbar-toggler" type="button" id="list-btn">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+        <span class="navbar-brand">Navbar</span>
+        <span class="badge bg-dark dark-badge" id="dark-badge">Dark 🔄</span>
+        <button class="navbar-toggler" type="button" id="list-btn">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="progress">
+            <div class="progress-bar"></div>
         </div>
     </nav>
+
     <ul class="list-group">
         <li class="list-group-item">An item</li>
         <li class="list-group-item">A second item</li>
@@ -50,9 +51,10 @@
         <button id="login-btn" class="btn btn-danger">로그인</button>
     </div>
 
-    <div class="alert alert-danger" id="count-sale">
+    <div class="alert alert-danger count-sale" id="count-sale">
         5초 이내 구매 시 사은품 증정~
     </div>
+    
     <div style="overflow: hidden;">
         <div class="slide-container">
             <div class="slide-box">
@@ -66,13 +68,24 @@
             </div>
         </div>
     </div>
-
+    
     <button type="button" class="btn btn-primary btn-sm rounded-pill slide-1">1</button>
     <button type="button" class="btn btn-primary btn-sm rounded-pill slide-2">2</button>
     <button type="button" class="btn btn-primary btn-sm rounded-pill slide-3">3</button>
 
     <button type="button" class="btn btn-primary btn-sm rounded-pill slide-prev">prev</button>
     <button type="button" class="btn btn-primary btn-sm rounded-pill slide-post">post</button>
+
+    <div class="lorem" style="width: 200px; height: 100px; overflow-y: scroll">
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae voluptas voluptatum minus praesentium fugit
+        debitis at, laborum ipsa itaque placeat sit, excepturi eius. Nostrum perspiciatis, eligendi quae consectetur
+        praesentium exercitationem.
+    </div>
+
+    <!-- ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ -->
+    <!-- ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ -->
+    <!-- ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ -->
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
@@ -86,7 +99,7 @@
         $('#list-btn').on('click', function () {
             $('.list-group').toggleClass('show');
         });
-        
+
         //로그인 시퀀스
         $('#login-btn').on('click', function () {
             $('.black-bg').addClass('show-modal')
@@ -94,6 +107,17 @@
 
         $('#close-btn').on('click', function () {
             $('.black-bg').removeClass('show-modal')
+        });
+
+        $('.black-bg').on('click', function (e) { //이벤트 버블링 발생
+            /*
+            e.target; //유저가 최초로 선택한 요소 반환
+            e.currentTarget; // 현재 이벤트 리스너를 갖는 요소 반환 (이 경우에서는 $('.black-bg'))
+            this; // = e.currentTarget
+            e.preventDefault(); // 이벤트 막기
+            e.stopPropagation(); // 이벤트 버블링 막기
+            */           
+           if(e.target == this) $('.black-bg').removeClass('show-modal');
         });
 
         $('#login-form').on('submit', function (e) {
@@ -170,7 +194,7 @@
             }
             dark++;
         });
-        
+
         //타이머
         let timer_cnt = 4;
 
@@ -184,39 +208,82 @@
         //캐러셀 슬라이드
         let slide = 0
         const max_silde = $('.slide-img').length - 1; //요소 개수 구하기
-        
 
-        function sliding(){
+
+        function sliding() {
             let temp = 'translateX(' + slide * -100 + 'vw)'
             $('.slide-container').css('transform', temp);
         }
 
-        $('.slide-1').on('click', function(){    
+        $('.slide-1').on('click', function () {
             slide = 0;
             sliding();
-        })
+        });
 
-        $('.slide-2').on('click', function(){
+        $('.slide-2').on('click', function () {
             slide = 1;
             sliding();
-        })
+        });
 
-        $('.slide-3').on('click', function(){
+        $('.slide-3').on('click', function () {
             slide = 2;
             sliding();
-        })
+        });
 
-        $('.slide-prev').on('click', function(){
-            if(slide>0){
+        $('.slide-prev').on('click', function () {
+            if (slide > 0) {
                 slide--;
                 sliding();
             }
-        })
-        $('.slide-post').on('click', function(){
-            if(slide<max_silde){
+        });
+        $('.slide-post').on('click', function () {
+            if (slide < max_silde) {
                 slide++;
                 sliding();
             }
+        });
+
+        //scroll event 처리
+        window.addEventListener('scroll', function () {
+            //window.scrollY // 현재 y축 스크롤 위치, scrollX = x축 위치
+            //window.scrollTo(0,0) // 스크롤 위치 강제 이동 (x, y)
+            //window.scrollBY(0,0) // 현재 위치 기준 스크롤 위치 강제 이동 (x, y)
+        });
+        //jquery: //$(window).scrollTop(100) // y축 스크롤 이동 및 현재 위치 반환
+
+        $(window).on('scroll', function () {
+            if ($(window).scrollTop() < 10) $('.navbar-brand').css('font-size', '30px');
+            else $('.navbar-brand').css('font-size', '20px');
+        })
+
+        /*
+            getElementsByClassName은 HTMLCollection 반환
+            querySelector, getElementById는 element 반환
+            querySelectorALL은 NodeList 반환
+            jquery의 $()은 jquery의 별도의 객체형식
+            */
+        //document.querySelector('.lorem').scrollTop; //div 스크롤된 높이 구하기
+        //document.querySelector('.lorem').scrollHeight; //div 스크롤 바 전체 높이
+        //document.querySelector('.lorem').clientHeight; //div 자체 높이
+
+        let scroll_cnt = true;
+        $('.lorem').on('scroll', function () {
+
+            let temp = document.querySelector('.lorem');
+            if (temp.scrollTop + temp.clientHeight > temp.scrollHeight - 1 && scroll_cnt) {
+                alert('다 읽음~');
+                scroll_cnt = false;
+            }
+
+        });
+        /*페이지 전체 기준에 대해서는...
+        document.querySelector('html').scrollHeight;
+        등등*/
+        
+        //페이지 스크롤에 따른 prgress-bar 채우기
+        $(window).on('scroll', function(){
+            let page = document.querySelector('html');
+             $('.progress-bar').css('width', window.scrollY / (page.scrollHeight - page.clientHeight) * 100 + '%');
         })
 
     </script>
