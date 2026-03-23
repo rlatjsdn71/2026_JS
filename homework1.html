@@ -13,11 +13,11 @@
     <button id="send-answer">제출</button>
 
     <script>
-        document.getElementById('send-answer').addEventListener('click', function(){
+        document.getElementById('send-answer').addEventListener('click', function () {
             var temp = document.getElementById('answer').value;
-            if(temp == '1335') alert('성공');
+            if (temp == '1335') alert('성공');
             else alert('실패');
-        });      
+        });
         let age = 24;
         const loc = "Seoul";
 
@@ -32,20 +32,59 @@
         var first = 360;
         console.log(first + (first * 2 / 3) + (first * 4 / 9));
 
-        function toMS(min,sec){
+        console.log('ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ')
+
+        function toMS(min, sec) {
             return sec * 1000 + min * 60 * 1000;
         }
 
-        console.log(toMS(1,30))
-        console.log(toMS(2,10));
+        console.log(toMS(1, 30))
+        console.log(toMS(2, 10));
 
-        function disc10p(p, b){
-            if(b) return parseFloat((p * 0.9 - 1.5).toFixed(1));
+        function disc10p(p, b) {
+            if (b) return parseFloat((p * 0.9 - 1.5).toFixed(1));
             return parseFloat((p * 0.9).toFixed(1));
         }
 
         console.log(disc10p(70, false));
         console.log(disc10p(10, true));
+
+        console.log('ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ')
+
+        let chk_list = ['흥민', '영희', '철수', '재석'];
+
+        function find(f) {
+            chk_list.forEach(function (a) {
+                if (a == f) console.log('있어영');
+            })
+        }
+
+        find('철수');
+        find('명수');
+
+        let matrix = [2, 3, 4, 5, 6, 7, 8, 9];
+        /* 잘됩니다
+                matrix.forEach(function(a){
+                    console.log(a);
+                    matrix.forEach(function(b){
+                        console.log(a*b);
+                    })
+                });
+        */
+
+        function avg(a, b) {
+            let temp = 0;
+            let average;
+            a.forEach((p) => {
+                temp += p;
+            })
+            average = temp / a.length;
+            if (b > average) console.log(`평균보다 ${b - average}점이 올랐네요`);
+            else if (b < average) console.log(`평균보다 ${average - b}점이 떨어졌네요`);
+        }
+
+        avg([10, 20, 30, 40, 50], 40);
+        avg([40, 40, 40], 20);
     </script>
 </body>
 
