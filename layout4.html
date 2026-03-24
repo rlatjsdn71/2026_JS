@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/60bdabfed7.js" crossorigin="anonymous"></script>
+    <!-- <link href="./css/" rel="stylesheet"> -->
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="container" id="card-container">
+        <div class="row">
+            <!-- 
+            <div class="col-sm-4">
+                <img src="https://placehold.co/600" class="w-100">
+                <h5>Card title</h5>
+                <p>가격 : 70000</p>
+                <button class="buy">구매하기</button>
+            </div>
+-->
+        </div>
+    </div>
+
+    <div class="container" style="margin-top: 20px;">
+        <button class="btn btn-danger" id="more">더보기</button>
+        <button class="btn btn-danger" id="sort-price">가격순 정렬</button>
+        <button class="btn btn-danger" id="sort-title">이름순 정렬</button>
+        <button class="btn btn-danger" id="filter-60"><input type="text" id="filter-price-input"
+                style="width: 30px; height: 20px; text-align: right;">만원 이하 상품만 보기</button>
+        <button class="btn btn-danger" id="reset">전체 보기</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
+
+    <script src="https://code.jquery.com/jquery-4.0.0.min.js"
+        integrity="sha256-OaVG6prZf4v69dPg6PhVattBXkcOWQB62pdZ3ORyrao=" crossorigin="anonymous"></script>
+
+    <script>
+        let products = [
+            { id: 0, price: 70000, title: 'Blossom Dress' },
+            { id: 1, price: 50000, title: 'Springfield Shirt' },
+            { id: 2, price: 60000, title: 'Black Monastery' }
+        ];
+
+        let disp = [];
+
+        function cards_display(list) {
+            let card_row = $('#card-container .row');
+            list.forEach(function (data, i) {
+                disp.push(data);
+                card_row.append(
+                    `<div class="col-sm-4">
+                <img src="https://placehold.co/600" class="w-100">
+                <h5>${data.title}</h5>
+                <p>가격 : ${data.price}</p>
+                <button class="buy">구매하기</button>
+            </div>`);
+            });
+
+            button_act();
+        }
+
+        function cards_clear() {
+            let card_row = $('#card-container .row');
+            card_row.html('');
+            disp = [];
+        }
+
+        cards_display(products); //init
+
+        /*ajax에 관하여...
+        //get 요청
+        $.get('https://codingapple1.github.io/hello.txt').done(function(data){ // done = 성공 시 실행
+            console.log(data) // 콜백함수 변수에 값 저장됨.
+        }).fail(function(){ // fail = 실패 시 실행
+            console.log('실패~');
+            
+        });
+
+        //post 요청
+        $.post('https://codingapple1.github.io/hello.txt', [123,456,789]).done(function(data){ // 2번째 변수에 보낼 값 입력
+            console.log(data) // 콜백함수 변수에 값 저장됨.
+        });
+        */
+       
+        let more_cnt = 1;
+        $('#more').click(function () {
+            let data;
+            $.get(`https://codingapple1.github.io/js/more${more_cnt}.json`)
+                .done((data) => {
+                    data.forEach(function (d, i) {
+                        products.push(d);
+                    })
+                    cards_display(data);
+                    more_cnt++;
+                })
+                .fail(() => {
+                    console.log(`fail~ cnt: ${more_cnt}`);
+                    console.log(this);
+                    this.style.display = 'none';
+                });
+        });
+
+        $('#reset').click(function () {
+            cards_clear();
+            cards_display(products);
+        })
+
+
+        /* 정렬에 관하여...
+        let arr = [7, 3, 5, 2, 40];
+        arr.sort(); //정렬 함수 -> 문자순 정렬: 2, 3, 40, 5, 7
+        arr.sort(function (a, b) { // 숫자 오름차순 정렬: 2, 3, 5, 7, 40
+            return a - b; // a, b는 배열 내의 각 숫자 조합, return 값이 양수면 a를 오른쪽으로 음수면 b를 오른쪽으로 한 칸
+            // 내림차순 정렬을 하기 위해서는 return b - a 사용
+        });
+
+        let arr2 = ['b', 'a', 'c'];
+        arr2.sort() //a, b, c
+        arr2.sort(function (a, b) { // 문자 내림차순 정렬
+            if (a > b) return -1;
+            return 1;
+        }); // c, b, a
+        */
+
+        $('#sort-price').click(function () {
+            let temp = disp;
+            temp.sort(function (a, b) {
+                return a.price - b.price;
+            })
+            cards_clear();
+            cards_display(temp);
+        });
+
+
+        $('#sort-title').click(function () {
+            let temp = disp
+            temp.sort(function (a, b) {
+                if (a.title > b.title) return -1
+                return 1;
+            })
+            cards_clear();
+            cards_display(temp);
+        });
+
+        /* filter에 관하여...
+        let arr = [7, 3, 5, 2, 40];
+        let arr2 = arr.filter(function (a) { // filter 함수, 배열을 필터링한 후 새로운 배열 반환(return)
+            return a > 5; //a는 배열의 각 값, a에 대한 return이 true면 새로운 배열에 a 포함
+        }); // -> arr2 = [7, 40]
+         */
+
+        $('#filter-60').click(function (e) {
+            if (/^[1-9][0-9]*$/.test($('#filter-price-input').val())) {
+                let filter_price = parseInt($('#filter-price-input').val()) * 10000;
+                let temp = products.filter(function (a) {
+                    return a.price <= filter_price;
+                });
+                cards_clear();
+                cards_display(temp);
+            }
+            else alert('맞지 않는 서식입니다.')
+        });
+
+        $('#filter-price-input').click((e) => { e.stopPropagation(); });
+
+        /* map에 관하여...
+        let arr = [7, 3, 5, 2 ,40];
+        let arr2 = arr.map(function(a){ //map 함수, 배열에 모든 값 매핑 한 후 새로운 배열 반환(return)
+           return a * 4; // 각 값(a)에 대하여 4를 곱한 값을 새로운 배열에 포함
+        }); // arr2 = [28, 12, 20, 8, 160]
+        */
+
+
+        /* storage에 관하여...
+        localStorage.setItem('name', 'kim'); // 로컬 스토리지에 값 저장, object 처럼 key: value 형식으로 저장
+        // 위 예시에서 key는 'name', value는 'kim', 문자나 숫자만 저장 가능
+        console.log(localStorage.getItem('name')); // 로컬 스토리지에서 값 추출
+        localStorage.removeItem('name'); // 로컬 스토리지에 있는 값 제거
+
+        let arr = [1, 2, 3];
+        localStorage.setItem('num', JSON.stringify(arr)); // 배열을 JSON(문자열)으로 바꾸어 저장
+        console.log(JSON.parse(localStorage.getItem('num'))); // 꺼낸 JSON을 다시 배열 or 오브젝트로 변환
+
+        // local 스토리지: 사용자가 삭제하지 않는 한 브라우저에 영구적으로 저장
+        // session 스토리지: 브라우저 종료하면 데이터 없어짐
+        */
+
+        function button_act() { // 정렬 시 버튼 내용이 초기화 되기 떄문에 함수화 하여 cards_display 함수 내부로 이동
+            $('.buy').click(function () {
+                if (localStorage.getItem('cart') == null) localStorage.setItem('cart', '{}');
+
+                /*
+                형제 노드에 관하여...
+                // JS에서 같은 부모 노드를 같는 형제 노드 찾기
+                console.log(this.previousElementSibling.previousElementSibling.innerText);
+                // previousElementSibling: 이전 노드, nextElementSibling: 다음 노드
+                // *previousSibling과 nextSibling은 줄바꿈이나 문자열도 포함하기에 ElementSibling 사용!
+    
+                //Jquery 문법
+                console.log($(this).prev().prev().text()); // prev: 이전, next: 다음
+                console.log($(this).siblings('h5').text()); // siblings(식별자(태그, 클래스, id))
+                */
+
+                let temp = JSON.parse(localStorage.getItem('cart'));
+                let item = $(this).siblings('h5').text();
+                if(temp[item] == null) temp[item] = 0;
+                temp[item]++;
+                localStorage.setItem('cart', JSON.stringify(temp));
+            });
+        }
+
+    </script>
+</body>
+
+</html>

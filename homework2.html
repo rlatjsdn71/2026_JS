@@ -60,6 +60,20 @@
             $('.card h5').eq(i).text(products[i].title);
             $('.card p').eq(i).text(`가격 : ${products[i].price}`); // `기호 사용 '기호 아님!
         }
+
+        //ajax: 새로고침 없이 서버와 통신
+        /* get 요청
+        $.get('https://codingapple1.github.io/hello.txt').done(function(data){ // done = 성공 시 실행
+            console.log(data) // 콜백함수 변수에 값 저장됨.
+        }).fail(function(){ // fail = 실패 시 실행
+            console.log('실패~');
+            
+        });*/
+
+        /* post 요청
+        $.post('https://codingapple1.github.io/hello.txt', [123,456,789]).done(function(data){ // 2번째 변수에 보낼 값 입력
+            console.log(data) // 콜백함수 변수에 값 저장됨.
+        });*/
     </script>
 </body>
 

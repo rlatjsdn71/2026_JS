@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <button class="reset">초기화</button>
+    <div>
+    </div>
+
+    <script>
+        document.querySelector('.reset').addEventListener('click', function () {
+            if (localStorage.getItem('cart') != null) {
+                localStorage.removeItem('cart');
+                document.querySelector('div').innerHTML = '';
+            }
+        });
+
+        if (localStorage.getItem('cart') != null) {
+            let obj = JSON.parse(localStorage.getItem('cart'))
+            for (let key in obj)
+                document.querySelector('div').innerHTML += `<p>${key}: ${obj[key]}</p>`;
+        }
+    </script>
+</body>
+
+</html>
