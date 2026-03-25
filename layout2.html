@@ -54,21 +54,21 @@
     <div class="alert alert-danger count-sale" id="count-sale">
         5초 이내 구매 시 사은품 증정~
     </div>
-    
+
     <div style="overflow: hidden;">
         <div class="slide-container">
             <div class="slide-box">
-                <img src="./img/car1-1.png" alt="" class="slide-img">
+                <img src="./img/car1-1.png" alt="" class="slide-img" draggable="false">
             </div>
             <div class="slide-box">
-                <img src="./img/car2-1.png" alt="" class="slide-img">
+                <img src="./img/car2-1.png" alt="" class="slide-img" draggable="false">
             </div>
             <div class="slide-box">
-                <img src="./img/car3-1.png" alt="" class="slide-img">
+                <img src="./img/car3-1.png" alt="" class="slide-img" draggable="false">
             </div>
         </div>
     </div>
-    
+
     <button type="button" class="btn btn-primary btn-sm rounded-pill slide-1">1</button>
     <button type="button" class="btn btn-primary btn-sm rounded-pill slide-2">2</button>
     <button type="button" class="btn btn-primary btn-sm rounded-pill slide-3">3</button>
@@ -116,8 +116,8 @@
             this; // = e.currentTarget
             e.preventDefault(); // 이벤트 막기
             e.stopPropagation(); // 이벤트 버블링 막기
-            */           
-           if(e.target == this) $('.black-bg').removeClass('show-modal');
+            */
+            if (e.target == this) $('.black-bg').removeClass('show-modal');
         });
 
         $('#login-form').on('submit', function (e) {
@@ -212,6 +212,7 @@
 
         function sliding() {
             let temp = 'translateX(' + slide * -100 + 'vw)'
+            $('.slide-container').css('transition', 'transform 0.5s');
             $('.slide-container').css('transform', temp);
         }
 
@@ -231,17 +232,39 @@
         });
 
         $('.slide-prev').on('click', function () {
+            /* 마우스 스와이프 기능을 위해 함수로 처리
             if (slide > 0) {
                 slide--;
                 sliding();
-            }
+            }*/
+           slide_prev();
         });
         $('.slide-post').on('click', function () {
+            /*
             if (slide < max_silde) {
                 slide++;
                 sliding();
-            }
+            }*/
+           slide_post();
         });
+
+        function slide_prev() {
+            if (slide > 0) {
+                slide--;
+                sliding();
+                return true; // 마우스 스와이프를 위해 반환값 추가
+            }
+            return false;
+        }
+
+        function slide_post() {
+            if (slide < max_silde) {
+                slide++;
+                sliding();
+                return true;
+            }
+            return false;
+        }
 
         //scroll event 처리
         window.addEventListener('scroll', function () {
@@ -279,13 +302,67 @@
         /*페이지 전체 기준에 대해서는...
         document.querySelector('html').scrollHeight;
         등등*/
-        
+
         //페이지 스크롤에 따른 prgress-bar 채우기
-        $(window).on('scroll', function(){
+        $(window).on('scroll', function () {
             let page = document.querySelector('html');
-             $('.progress-bar').css('width', window.scrollY / (page.scrollHeight - page.clientHeight) * 100 + '%');
+            $('.progress-bar').css('width', window.scrollY / (page.scrollHeight - page.clientHeight) * 100 + '%');
         })
 
+        //캐러셀 슬라이드 마우스로 스와이프하기
+        /* 마우스 이벤트에 관하여...
+        mousedown: 마우스 눌렀을 떄
+        mouseup: 마우스 땠을 때
+        *(click : mousedown, mouseup 통합)
+        mousemove: 마우스 움직일 떄
+
+        *모바일용 터치 이벤트
+        touchstart: 터치 했을 때
+        touchmove: 터치 한 채로 움직였을 때
+        touchend: 터치 땠을 떄
+        */
+        let downed = null;
+        $('.slide-box').on('mousedown', function (e) {
+            //e.clientX // 마우스 x축 좌표
+            //e.clientY // 마우스 y축 좌표
+            downed = e.clientX;
+            $('.slide-container').css('transition', 'none');
+        });
+
+        $('.slide-box').on('mousemove', function (e) {
+            if (downed != null)
+                $('.slide-container').css('transform', `translateX(${-1 * window.innerWidth * slide + e.clientX - downed}px)`);                
+            //window.innerWidth 사용하여 모든 슬라이드에서 활용
+            //window.innerWidth는 100vw를 픽셀단위로 환산한 값
+        });
+
+        $('.slide-box').on('mouseup', function (e) {
+            let temp = false;
+            let moved = e.clientX - downed;
+            if(moved < -0.3 * window.innerWidth) temp = slide_post();
+            else if(moved > 0.3 * window.innerWidth) temp = slide_prev();
+            if(!temp) sliding();
+            downed = null;
+        });
+
+        $('.slide-box').eq(0).on('touchstart', function (e) {
+            downed = e.touches[0].clientX; //터치 이벤트에서는 .touches로 동시에 입력된 터치 중 몇 번째 터치인지 지정해야 함
+            $('.slide-container').css('transition', 'none');
+        });
+
+        $('.slide-box').eq(0).on('touchmove', function (e) {
+            if (downed != null)
+                $('.slide-container').css('transform', `translateX(${e.touches[0].clientX - downed}px)`);                
+        });
+
+        $('.slide-box').eq(0).on('touchend', function (e) {
+            let temp = false;
+            let moved = e.changedTouches[0].clientX - downed; //종료 시에는 changedTouches로 지정해야 함
+            if(moved < -150) temp = slide_post();
+            else if(moved > 150) temp = slide_prev();
+            if(!temp) sliding();
+            downed = null;
+        });
     </script>
 </body>
 

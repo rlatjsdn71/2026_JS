@@ -11,6 +11,12 @@
     <p>태조 이성계가 태어난 년도는?</p>
     <input type="text" id="answer">
     <button id="send-answer">제출</button>
+    <div id="quiz">
+        <h5>물에 빠지면 누구 먼저 구하나용?</h5>
+        <button>와이프</button>
+        <button>부모님</button>
+        <button>친구</button>
+    </div>
 
     <script>
         document.getElementById('send-answer').addEventListener('click', function () {
@@ -85,6 +91,25 @@
 
         avg([10, 20, 30, 40, 50], 40);
         avg([40, 40, 40], 20);
+
+        console.log('ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ')
+
+        //switch 문법 공부
+
+        document.querySelector('#quiz').addEventListener('click', function (e) {
+            switch (e.target.innerText) {
+                case '와이프':
+                    alert("좋은 연인");
+                    break;
+                case '부모님':
+                    alert("좋은 자식");
+                    break;
+                case '친구':
+                    alert("좋은 친구");
+                    break;
+                default: break;
+            }
+        })
     </script>
 </body>
 

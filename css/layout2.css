@@ -36,8 +36,6 @@ div {
 
 .slide-container{
     width: 300vw;
-
-    transition: transform 1s;
 }
 
 .slide-box{
